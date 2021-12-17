@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Successful Registration</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+
+<div class="main">
+    <div class="container">
+        <div class="content-page" style="width: 600px; align-items: center; margin: auto">
+
+            <div class="mask d-flex align-items-center h-100">
+                <div class="mask d-flex align-items-center h-100">
+                    <div class="card-body p-5">
+                        <div class="alert alert-warning alert-dismissible d-flex align-items-center" role="alert">
+                            <br>
+                            <h1><i class="fa fa-user-plus"></i>
+                                <strong class="mx-2">Your account has been created!</strong></h1>
+                            <hr>
+                            <p class="mb-0">Thank you! Your new account has been successfully registered!
+                                A confirmation email has been sent to the email address you provided.
+                                Please click the link in that message to confirm your account.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

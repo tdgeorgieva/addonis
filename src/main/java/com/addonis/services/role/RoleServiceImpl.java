@@ -4,6 +4,7 @@ import com.addonis.exceptions.DuplicateEntityException;
 import com.addonis.exceptions.EntityNotFoundException;
 import com.addonis.models.Role;
 import com.addonis.repositories.role.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
 
+    @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
@@ -29,37 +31,30 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void create(Role role) {
-        boolean duplicateExists = true;
-        try {
-            roleRepository.getByField("name", role.getName());
-        } catch (EntityNotFoundException e) {
-            duplicateExists = false;
-        }
-        if (duplicateExists) {
-            throw new DuplicateEntityException("Role", "name", role.getName());
-        }
-
+        checkDuplicateExists("name", role.getName());
         roleRepository.create(role);
     }
 
     @Override
     public void update(Role role) {
-        boolean duplicateExists = true;
-        try {
-            roleRepository.getByField("field", role.getName());
-        } catch (EntityNotFoundException e) {
-            duplicateExists = false;
-        }
-
-        if (duplicateExists) {
-            throw new DuplicateEntityException("Role", "name", role.getName());
-        }
-
+        checkDuplicateExists("name", role.getName());
         roleRepository.update(role);
     }
 
     @Override
     public void delete(int id) {
         roleRepository.delete(id);
+    }
+
+    private void checkDuplicateExists(String attribute, String value) {
+        boolean duplicateExists = true;
+        try {
+            roleRepository.getByField(attribute, value);
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+        if (duplicateExists) {
+            throw new DuplicateEntityException("IDE", attribute, value);
+        }
     }
 }

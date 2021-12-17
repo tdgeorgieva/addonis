@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="card-body" style="padding: 15px;">
+    <ul class="list-group margin-bottom-25 sidebar-menu">
+
+        <li class="list-group-item clearfix custom-li">
+            <a href="javascript:;" th:href="@{/account/update}">
+                <i class="fa fa-angle-right"></i> Edit account information</a></li>
+
+        <li class="list-group-item clearfix custom-li">
+            <a href="javascript:;" th:href="@{/account/updatePassword}"><i
+                    class="fa fa-angle-right"></i> Change password</a></li>
+
+        <li th:if="${!isAdmin and !user.isVerified()}" class="list-group-item clearfix custom-li">
+            <a href="javascript:;"  th:href="@{/account/requestVerification}"><i
+                class="fa fa-angle-right"></i> Verify identity</a></li>
+
+        <li class="list-group-item clearfix custom-li">
+            <a href="javascript:;" th:href="@{/users/{username}(username=${user.getUsername()})}"><i
+                class="fa fa-angle-right"></i> My add-ons</a></li>
+
+        <li th:if="${user.getStatus.toString().equals('Verified')}" class="list-group-item clearfix custom-li">
+            <a href="javascript:;" th:href="@{/addons/new}"><i
+                class="fa fa-angle-right"></i> Create new add-on</a></li>
+
+        <li class="list-group-item clearfix custom-li">
+            <a href="javascript:;" th:href="@{/account/invite}"><i
+                class="fa fa-angle-right"></i> Invite a friend</a></li>
+    </ul>
+</div>
+</body>
+</html>

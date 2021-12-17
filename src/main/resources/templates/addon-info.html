@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        h1 {
+            color: deepskyblue;
+        }
+
+        .checked {
+            color: deepskyblue;
+        }
+
+        .rate-star {
+            cursor: pointer;
+        }
+
+        #showReview {
+            height: 200px;
+            overflow-y: scroll;
+        }
+        .tag {
+            display: inline-block;
+            margin-bottom: 3px;
+            margin-top: 3px;
+        }
+    </style>
+    <title></title>
+
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="header"></div>
+
+
+<div class="main">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a th:href="@{/index}">Home</a></li>
+            <li><a th:href="@{/addons}">Addons</a></li>
+            <li class="active" th:text="${addon.getName()}">Addon name</li>
+        </ul>
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+            <!-- BEGIN SIDEBAR -->
+            <div class="sidebar col-md-3 col-sm-5">
+                <ul class="list-group margin-bottom-25 sidebar-menu">
+                    <li class="list-group-item clearfix dropdown active">
+                        <a href="shop-product-list.html" class="collapsed">
+                            <i class="fa fa-angle-right"></i>
+                            Add-ons
+
+                        </a>
+                        <ul class="dropdown-menu" style="display:block;">
+
+                            <li><a th:href="@{/addons/filtered/featured}"><i class="fa fa-angle-right"></i>Featured</a></li>
+                            <li><a th:href="@{/addons?pageSize=10&ideId=-1&sortBy=downloadsCount_desc&addonName=}"><i class="fa fa-angle-right"></i>Popular</a></li>
+                            <li><a th:href="@{/addons?pageSize=10&ideId=-1&sortBy=date_desc&addonName}"><i class="fa fa-angle-right"></i>New</a></li>
+                            <li th:if="${isLogged}"><a th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"><i class="fa fa-angle-right"></i>My Add-ons</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="sidebar-products clearfix">
+                    <h2>Popular IDEs</h2>
+                    <div class="item">
+                        <a href="https://www.jetbrains.com/idea/"><img
+                                th:src="@{/assets/pages/img/products/IntelliJ_IDEA_Icon.png}"
+                                alt="IntelliJ"></a>
+                        <p><a th:href="@{https://www.jetbrains.com/idea/}">IntelliJ Ide</a></p>
+                        <!--                        <div class="price">$31.00</div>-->
+                    </div>
+                    <div class="item">
+                        <a href="https://visualstudio.microsoft.com/"><img
+                                th:src="@{/assets/pages/img/products/Visual-Studio-Logo.png}"
+                                alt="Visual Studio"></a>
+                        <p><a th:href="@{https://visualstudio.microsoft.com/}">Visual Studio</a>
+                        </p>
+                    </div>
+                    <div class="item">
+                        <a href="https://netbeans.apache.org/"><img
+                                th:src="@{/assets/pages/img/products/Apache_NetBeans_Logo.png}"
+                                alt="NetBeans"></a>
+                        <p><a th:href="@{https://netbeans.apache.org/}">NetBeans</a></p>
+                        <!--                        <div class="price">$86.00</div>-->
+                    </div>
+                </div>
+            </div>
+            <!-- END SIDEBAR -->
+
+            <!-- BEGIN CONTENT -->
+            <div class="col-md-9 col-sm-7">
+                <div class="product-page">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="addon-image">
+                                <label class="-label">
+                                    <img alt="avatar" class="addon-avatar" th:if="${addon.getImage() == null}"
+                                         th:src="@{/assets/addons/photos/defaultAddonPhoto.jpg}"/>
+
+                                    <img alt="avatar" class="addon-avatar" th:if="${addon.getImage() != null}"
+                                         th:src="*{'data:image/png;base64,'+ encodedPhoto}"/>
+                                </label>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <h1 th:text="${addon.getName()}">Addon name</h1>
+                            <div class="price-availability-block clearfix">
+                                <div class="tag" th:if="${addon.isFeatured()==true}">
+                                    <span class="badge-pill badge-warning">Featured</span>
+                                </div>
+                                <div class="tag" th:each="tag : ${tags}">
+                                    <span class=" badge badge-pill badge-primary"
+                                          th:text="${tag.getName()}">addon tags</span>
+                                </div>
+                            </div>
+                            <div class="price-availability-block clearfix">
+                                <div class="price">
+
+                                    <div>
+                                        <h2>Overall Rating:
+                                            <span id="overallRating"
+                                                  th:text="${#numbers.formatDecimal(rating == null ? 0 : rating, 0, 0)}"></span>
+                                        </h2>
+                                    </div>
+
+                                    <div id="addonId" th:text="${addon.getId()}" class="hidden"></div>
+                                    <div id="userRating"
+                                         th:text="${#numbers.formatDecimal(rating == null ? 0 : rating, 0, 0)}"
+                                         class="hidden"></div>
+                                    <h2 th:if="${isLogged}">Your Rate:
+                                        <span class="rate-star fa fa-star "
+                                              th:classappend="${rating >= 1} ? 'checked' : ''" data-rating="1"></span>
+                                        <span class="rate-star fa fa-star "
+                                              th:classappend="${rating >= 2} ? 'checked' : ''" data-rating="2"></span>
+                                        <span class="rate-star fa fa-star "
+                                              th:classappend="${rating >= 3} ? 'checked' : ''" data-rating="3"></span>
+                                        <span class="rate-star fa fa-star"
+                                              th:classappend="${rating >= 4} ? 'checked' : ''" data-rating="4"></span>
+                                        <span class="rate-star fa fa-star"
+                                              th:classappend="${rating >= 5} ? 'checked' : ''" data-rating="5"></span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <!--                            <div class="price-availability-block clearfix">-->
+                            <!--                                <div class="description">-->
+                            <!--                                    <p th:text="${addon.getDescription()}">Addon Description</p>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div class="price-availability-block clearfix">
+                                <table style="width: 250px;">
+                                    <tbody>
+                                    <tr>
+                                        <td><strong th:text="#{addon.publisher}"></strong></td>
+                                        <td th:if="${addon.getUser.getLastName() == null}">
+                                            <a th:text="${addon.getUser().getUsername()}"
+                                               th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"></a>
+                                        </td>
+                                        <td th:if="${addon.getUser.getLastName() != null}">
+                                            <a th:text="${addon.getUser().getUserFullName()}"
+                                               th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong th:text="#{addon.date}"></strong></td>
+                                        <td th:text="${addon.getDate()}">date</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong th:text="#{addon.repo}"></strong>
+                                        <a th:href="${addon.getLink()}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-box-arrow-up-right"
+                                                 viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                      d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                                            </svg>
+                                        </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="price-availability-block clearfix">
+                                <a th:href="@{/addons/{id}/download(id=${addon.getId()})}">
+                                    <button class="btn btn-primary " type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                             fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                                        </svg>
+                                        Download
+                                    </button>
+                                </a>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                                     class="bi bi-download" viewBox="0 0 16 16">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                </svg>
+                                <p style="display: contents" th:text="${addon.getDownloadsCount()} + ' downloads'">
+                                    downloads></p>
+                            </div>
+
+                            <div class="price-availability-block clearfix"
+                                 th:if="${(currentUser != null and !currentUser.isBlocked() and currentUser.getUsername().equals(addon.getUser().getUsername()))
+                                 or (currentUser != null and currentUser.isAdmin())}">
+                                <div>
+                                    <a class="btn btn-primary" type="submit"
+                                       th:href="@{/addons/{id}/update(id=${addon.getId()})}">Update</a>
+                                    <a class="btn btn-danger" type="submit"
+                                       th:href="@{/addons/{id}/delete(id=${addon.getId()})}">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-page-content">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li><a href=#Description data-toggle="tab">Description</a></li>
+                                <li><a href="#Information" data-toggle="tab">Information</a></li>
+                                <li class="active"><a href="#reviews" data-toggle="tab">Reviews (<span
+                                        th:text="${reviewsCount}"></span>)</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade" id="Description">
+                                    <p th:text="${addon.getDescription()}">Addon Description</p>
+                                </div>
+                                <div class="tab-pane fade" id="Information">
+                                    <table class="datasheet">
+                                        <tr>
+                                            <th colspan="2">Additional Information</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Addon name</td>
+                                            <td th:text="${addon.getName()}">Addon name</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Description</td>
+                                            <td th:text="${addon.getDescription()}">Addon description</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Creator</td>
+                                            <td th:text="${addon.getUser().getUserFullName()}">user name</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Downloads</td>
+                                            <td th:text="${addon.getDownloadsCount()}">Addon downloads</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Open issues count</td>
+                                            <td th:text="${addon.getIssues()}">Open issues count</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Pull requests count</td>
+                                            <td th:text="${addon.getPulls()}">Pull requests count</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="datasheet-features-type">Last commit</td>
+                                            <td>
+                                                <span>Date: </span>
+                                                <span th:text="${addon.getLastCommitDate()}">Date: </span>
+                                                <span>, Title: </span>
+                                                <span th:text="${addon.getLastCommitTitle()}">, Title: </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade in active" id="reviews">
+                                    <div th:if="${reviews.isEmpty()}">
+                                        <h2 th:text="#{reviews.empty}">There are no reviews for this addon.</h2>
+                                    </div>
+                                    <div id="showReview">
+                                        <div class="review-item clearfix" th:each="review : ${reviews}">
+                                            <div class="review-item-submitted">
+                                                <strong th:text="${review.getUser().getUsername()}">Author</strong>
+                                                <p th:text="${review.getDate()}"><em>time-date</em></p>
+                                            </div>
+                                            <div class="review-item-content">
+                                                <p th:text="${review.getDescription}">Review</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- BEGIN FORM-->
+                                    <form th:if="${isLogged}" class="reviews-form"
+                                          th:action="@{/addons/{id}/addReview(id=${addon.getId()})}"
+                                          th:method="post" th:object="${ReviewDto}" role="form">
+                                        <h2>Write a review</h2>
+                                        <div class="form-group">
+                                            <label for="name">Name <span class="require">*</span></label>
+                                            <input type="text" class="form-control" id="name"
+                                                   th:placeholder="${currentUser.getUsername()}"
+                                                   readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="review">Review <span class="require">*</span></label>
+                                            <textarea class="form-control" rows="8" id="review"
+                                                      th:field="*{description}"></textarea>
+                                        </div>
+
+                                        <div class="padding-top-20">
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                            <!--                                            <label class="error error-fields" style="color: lightseagreen"-->
+                                            <!--                                                   th:errors="*{email}"></label>-->
+                                        </div>
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END SIDEBAR & CONTENT -->
+
+        <!-- BEGIN new addons -->
+        <div class="row margin-bottom-40">
+            <div class="col-md-12 col-sm-12">
+                <h2>New addons</h2>
+                <div class="owl-carousel owl-carousel4">
+                    <div th:each="addon : ${newAddons}">
+                        <div class="product-item">
+                            <div class="pi-img-wrapper">
+                                <img alt="avatar" class="avatar" th:if="${addon.getImage() != null}"
+                                     th:src="|data:image/png;base64,${addon.getBase6EncodedImage()}|"/>
+                                <div>
+                                    <a href="#" th:href="@{/addons/{id}(id=${addon.getId()})}" class="btn btn-default fancybox-fast-view">View</a>
+                                </div>
+                            </div>
+                            <h3><a th:href="@{/addons/{id}(id=${addon.getId()})}"
+                                   th:text="${addon.getName()}">Addon</a>
+                            </h3>
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                                     class="bi bi-download" viewBox="0 0 16 16">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                </svg>
+                                <small th:text="${addon.getDownloadsCount()} + downloads">downloads></small>
+                            </h3>
+                            <!--  rating-->
+                            <h3>
+                                <span class="rate-star fa fa-star "
+                                          th:classappend="${rating >= 1} ? 'checked' : ''"></span>
+                                <span class="rate-star fa fa-star "
+                                      th:classappend="${rating >= 2} ? 'checked' : ''"></span>
+                                <span class="rate-star fa fa-star "
+                                      th:classappend="${rating >= 3} ? 'checked' : ''"></span>
+                                <span class="rate-star fa fa-star"
+                                      th:classappend="${rating >= 4} ? 'checked' : ''"></span>
+                                <span class="rate-star fa fa-star"
+                                      th:classappend="${rating >= 5} ? 'checked' : ''"></span>
+                            </h3>
+                            <!--                                <h3 th:unless="${addon.isApproved()}">-->
+                            <!--                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"-->
+                            <!--                                         class="bi bi-info-circle" viewBox="0 0 16 16">-->
+                            <!--                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>-->
+                            <!--                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>-->
+                            <!--                                    </svg>-->
+                            <!--                                    <small th:text="${addon.getStatus()}">status></small>-->
+                            <!--                                </h3>-->
+                            <div class="ribbon ribbon-top-left text-success"><span class="bg-danger" style="background-color: #69cd8f;">New</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END SIMILAR PRODUCTS -->
+
+        <!-- BEGIN fast view of a product -->
+        <div id="product-pop-up" style="display: none; width: 700px;" th:each="addon : ${newAddons}">
+            <div class="product-page product-pop-up">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-3">
+                        <div class="product-main-image">
+                            <img alt="avatar" class="avatar" th:if="${addon.getImage() != null}"
+                                 th:src="|data:image/png;base64,${addon.getBase6EncodedImage()}|"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-9">
+                        <h2 th:text="${addon.getName()}"></h2>
+                        <div class="price-availability-block clearfix">
+                            <div class="availability">
+                                Creator: <strong th:text="${addon.getUser().getUserFullName()}">Creator name</strong>
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p th:text="${addon.getDescription()}">Addon description</p>
+                        </div>
+                        <div class="product-page-options">
+                            <div class="pull-left">
+                                <label class="control-label">Upload date:</label>
+                                <p th:text="${addon.getDate()}">Addon upload date</p>
+                            </div>
+                            <div class="pull-left">
+                                <label class="control-label">Ide:</label>
+                                <p th:text="${addon.getIde().getName()}">Addon description</p>
+                            </div>
+                        </div>
+                        <div class="product-page-cart">
+                            <button class="btn btn-primary">
+                                <a th:href="@{/addons/test/{id}(id=${addon.getId()})}" class="btn btn-default">More
+                                    details</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:insert="fragments/footer.html" th:fragment="footer"></div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+<script th:src="@{/assets/plugins/fancybox/source/jquery.fancybox.pack.js}" type="text/javascript"></script>
+<!-- pop up -->
+<script th:src="@{/assets/plugins/owl.carousel/owl.carousel.min.js}" type="text/javascript"></script>
+<!-- slider for products -->
+<script th:src="@{/assets/plugins/zoom/jquery.zoom.min.js}" type="text/javascript"></script>
+<!-- product zoom -->
+<script th:src="@{/assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js}" type="text/javascript"></script>
+<!-- Quantity -->
+<script th:src="@{/assets/plugins/uniform/jquery.uniform.min.js}" type="text/javascript"></script>
+<script th:src="@{/assets/plugins/rateit/src/jquery.rateit.js}" type="text/javascript"></script>
+
+<script th:src="@{/assets/corporate/scripts/layout.js}" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+        Layout.initImageZoom();
+        Layout.initTouchspin();
+        Layout.initUniform();
+    });
+</script>
+<script>
+
+    // Rating Initialization
+    $(document).ready(function () {
+        var stars = $(".rate-star")
+        // var userRating = $("#userRating").text()
+        // for (var i = 0; i < userRating; i++) {
+        //     $(stars.get(i)).addClass("checked");
+        // }
+        stars.click(function (e) {
+            var rating = $(this).data("rating");
+            var addonId = $("#addonId").text();
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                url: "http://localhost:8080/addons/" + addonId + "/rating",
+                method: "PATCH",
+                data: JSON.stringify({
+                    "rating": rating,
+                }),
+            }).done(function (newOverallRating) {
+                stars.each(function (index) {
+                    $(this).removeClass("checked");
+                });
+                for (var i = 0; i < rating; i++) {
+                    $(stars.get(i)).addClass("checked");
+                }
+                $("#overallRating").text((Math.round(newOverallRating * 100) / 100).toFixed(1));
+
+            })
+        })
+        ;
+    });
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

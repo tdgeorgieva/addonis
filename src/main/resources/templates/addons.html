@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<!-- Head BEGIN -->
+<head>
+    <meta charset="utf-8">
+    <title>Addons</title>
+
+    <!-- Fonts START -->
+    <link th:href="@{http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all}"
+          rel="stylesheet" type="text/css">
+    <!-- Fonts END -->
+
+    <!-- Page level plugin styles START -->
+    <link th:href="@{assets/plugins/fancybox/source/jquery.fancybox.css}" rel="stylesheet">
+    <link th:href="@{assets/plugins/owl.carousel/assets/owl.carousel.css}" rel="stylesheet">
+    <link th:href="@{assets/plugins/uniform/css/uniform.default.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css}" rel="stylesheet"
+          type="text/css"><!-- for slider-range -->
+    <link th:href="@{assets/plugins/rateit/src/rateit.css}" rel="stylesheet" type="text/css">
+    <!-- Page level plugin styles END -->
+    <style>
+        .searchButton {
+            margin-top: 17px;
+        }
+        .filters {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<!-- Head END -->
+
+
+<!-- Body BEGIN -->
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="header"></div>
+
+<div class="row margin-bottom-40">
+    <div class="main">
+        <div class="container">
+            <div class="col-sm-12">
+                <form action="#" th:action="@{/addons}" th:method="get">
+                    <div class="content-search margin-bottom-20">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="filters pull-right">
+                                    <label class="control-label">Show:</label>
+                                    <select class="form-control input-sm" name="pageSize">
+                                        <option value="3" th:selected="${page != null && page.getPageSize() == 3}">3</option>
+                                        <option value="5" th:selected="${page != null && page.getPageSize() == 5}">5</option>
+                                        <option value="10" th:selected="${page != null && page.getPageSize() == 10}">10</option>
+                                        <option value="30" th:selected="${page != null && page.getPageSize() == 30}">30</option>
+                                    </select>
+                                </div>
+                                <div class="filters pull-right">
+                                    <label class="control-label">Filter&nbsp;By Ide:</label>
+                                    <select class="form-control input-sm" name="ideId">
+                                        <option value="-1" >No IDE selected</option>
+                                        <option th:each="ide : ${ides}" th:selected="${ide.value == filterAddonDto.getIdeId()}"  th:value="${ide.value}"
+                                                th:text="${ide.key}"></option>
+                                    </select>
+                                </div>
+                                <div class="filters pull-right">
+                                    <label class="control-label">Sort&nbsp;By:</label>
+                                    <select class="form-control input-sm" name="sortBy">
+                                        <option value="">No sort selected</option>
+                                        <option th:selected="${filterAddonDto.getSort() != null and filterAddonDto.getSort().equals('name_asc')}"  value="name_asc">Name (A - Z)</option>
+                                        <option th:selected="${filterAddonDto.getSort() != null and filterAddonDto.getSort().equals('name_desc')}" value="name_desc">Name (Z - A)</option>
+                                        <option th:selected="${filterAddonDto.getSort() != null and filterAddonDto.getSort().equals('downloadsCount_asc')}" value="downloadsCount_asc">Number of downloads (Low &gt; High)</option>
+                                        <option th:selected="${filterAddonDto.getSort() != null and filterAddonDto.getSort().equals('downloadsCount_desc')}" value="downloadsCount_desc">Number of downloads (High &gt; Low)
+                                        </option>
+                                        <option th:selected="${filterAddonDto.getSort() != null and filterAddonDto.getSort().equals('date_desc')}" value="date_desc">Upload date (Newest)</option>
+                                        <option th:selected="${filterAddonDto.getSort() != null and filterAddonDto.getSort().equals('date_asc')}" value="date_asc">Upload date (Oldest)</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="col-md-9 col-sm-9">
+                                    <label class="control-label"></label>
+                                    <input type="text" placeholder="Search again"
+                                           class="filters form-control" name="addonName" th:value="${filterAddonDto.getName()}">
+                                </div>
+                                <div class="searchButton col-md-3 col-sm-6">
+                                    <span class="input-group-btn">
+                                         <button class="btn btn-primary" type="submit">Search</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="container">
+            <!-- BEGIN SIDEBAR & CONTENT -->
+            <div class="row margin-bottom-40">
+                <!-- BEGIN CONTENT -->
+                <div class="col-md-12 col-sm-12">
+
+                    <div class="goods-page">
+                        <div class="goods-data clearfix">
+                            <div class="table-wrapper-responsive">
+                                <div th:if="${addons.isEmpty()}">
+                                    <h2 th:text="#{addons.title.empty}">No addons</h2>
+                                </div>
+                                <h2 th:unless="${addons.isEmpty()}" th:text="${heading}">addons</h2>
+                                <table caption="addons table" th:unless="${addons.isEmpty()}">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" th:text="#{addon.label.image}">image</th>
+                                        <th scope="col" th:text="#{addon.label.name}">name</th>
+                                        <th scope="col" th:text="#{addon.label.info}">info</th>
+                                        <th scope="col" th:text="#{addon.label.ide}">ide</th>
+                                        <th scope="col" th:text="#{addon.label.downloads}">downloads</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="addon : ${addons}">
+                                    <tr>
+                                        <td class="goods-page-image"><a href="javascript:;">
+                                            <label class="-label">
+                                                <img alt="avatar" class="avatar" th:if="${addon.getImage() == null}"
+                                                     th:src="@{/assets/addons/photos/defaultAddonPhoto.jpg}"/>
+
+                                                <img alt="avatar" class="avatar" th:if="${addon.getImage() != null}"
+                                                     th:src="|data:image/png;base64,${addon.getBase6EncodedImage()}|"/>
+                                            </label>
+                                        </a>
+                                        </td>
+
+                                        <td class="goods-page-price">
+                                            <a th:href="@{/addons/{id}(id=${addon.getId()})}">
+                                                <strong th:text="${addon.getName()}"></strong></a></td>
+
+                                        <td class="goods-page-description">
+                                            <p th:if="${addon.getUser.getLastName() == null }">
+                                                <strong>Addon Creator:</strong><em><a
+                                                    th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"
+                                                    th:text="${addon.getUser().getUsername()}"></a></em></p>
+
+                                            <p th:if="${addon.getUser.getLastName() != null}">
+                                                <strong>Addon Creator:</strong><em><a
+                                                    th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"
+                                                    th:text="${addon.getUser().getUserFullName()}"></a></em></p>
+
+                                            <p><strong>Upload date:</strong><em th:text="${addon.getDate()}">upload
+                                                date</em></p>
+                                        </td>
+
+                                        <td class="goods-page-price"><strong
+                                                th:text="${addon.getIde().getName()}"></strong>
+                                        </td>
+                                        <td class="goods-page-total"><strong
+                                                th:text="${addon.getDownloadsCount()}"></strong></td>
+
+                                        <td class="del-goods-col">
+                                            <a th:if="${isAdmin} and ${!addon.isApproved()}"
+                                               th:href="@{/addons/{id}/approve(id=${addon.getId()})}">
+                                                <button class="btn btn-success" type="submit">Approve<i
+                                                        aria-hidden="true"></i></button>
+                                            </a>
+
+                                            <a th:if="${isAdmin} and ${!addon.isApproved()}"
+                                               th:href="@{/addons/{id}/delete(id=${addon.getId()})}">
+                                                <button class="btn btn-danger" type="submit">Decline<i
+                                                        aria-hidden="true"></i></button>
+                                            </a>
+
+                                            <a th:if="${isAdmin} and ${addon.isApproved()} and ${addon.isFeatured()==false}"
+                                               th:href="@{/addons/{id}/markFeatured(id=${addon.getId()})}">
+                                                <button class="btn btn-warning" type="submit"> Mark featured <i
+                                                        class="fa fa-thumb-tack" aria-hidden="true"></i></button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTENT -->
+            </div>
+            <!-- END SIDEBAR & CONTENT -->
+
+
+            <!-- BEGIN PAGINATOR -->
+            <div class="row">
+                <div class="col-md-8 col-sm-8">
+                    <ul class="pagination pull-right" >
+                        <li th:each="i: ${#numbers.sequence(1, totalPages)}"><a th:href="@{'/addons?pageNumber=' + ${i-1} + '&' + ${queryPath}} " th:text="${i}"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END PAGINATOR -->
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments/footer.html" th:fragment="footer"></div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+<script th:src="@{/assets/plugins/fancybox/source/jquery.fancybox.pack.js}" type="text/javascript"></script>
+<!-- pop up -->
+<script th:src="@{/assets/plugins/owl.carousel/owl.carousel.min.js}" type="text/javascript"></script>
+<!-- slider for products -->
+<script th:src="@{/assets/plugins/zoom/jquery.zoom.min.js}" type="text/javascript"></script><!-- product zoom -->
+<script th:src="@{/assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js}" type="text/javascript"></script>
+<!-- Quantity -->
+<script th:src="@{/assets/plugins/uniform/jquery.uniform.min.js}" type="text/javascript"></script>
+<script th:src="@{/assets/plugins/rateit/src/jquery.rateit.js}" type="text/javascript"></script>
+<script th:src="@{/http://code.jquery.com/ui/1.10.3/jquery-ui.js}" type="text/javascript"></script>
+<!-- for slider-range -->
+
+<script th:src="@{/assets/corporate/scripts/layout.js}" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+        Layout.initImageZoom();
+        Layout.initTouchspin();
+        Layout.initUniform();
+        Layout.initSliderRange();
+    });
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+
+</body>
+<!-- END BODY -->
+</html>

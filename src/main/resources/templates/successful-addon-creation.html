@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Successful creation</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+
+<div class="main">
+    <div class="container">
+        <div class="content-page" style="width: 600px; align-items: center; margin: auto">
+
+            <div class="mask d-flex align-items-center h-100">
+                <div class="mask d-flex align-items-center h-100">
+                    <div class="card-body p-5">
+                        <div class="alert alert-warning alert-dismissible d-flex align-items-center" role="alert">
+                            <br>
+                            <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+                                <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                            </svg>
+                                <strong class="mx-2">Your add-on is being created!</strong></h1>
+                            <hr>
+                            <p class="mb-0">In order to verify your add-on, so it can be posted on our website,
+                                a confirmation code has been sent to your email address.
+                            </p>
+                            <p>Please note that the code will be valid one week.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

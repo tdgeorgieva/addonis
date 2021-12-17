@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="profile-image">
+    <label class="-label"></label>
+<!--    for old db records//temporary-->
+    <img alt="avatar" class="avatar" th:if="${user.getPhoto() == null}"
+         th:src="@{/assets/users/defaultProfilePhoto.jpg}"/>
+
+    <img alt="avatar" class="avatar" th:if="${user.getPhoto() != null}"
+         th:src="@{'data:image/png;base64,'+ '' + ${user.getEncodedImage()}}"/>
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit your profile</title>
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                    <div class="card border-0 shadow">
+
+                        <div class="profile-image-edit">
+                            <label class="-label" for="file">
+                                <img alt="avatar" class="avatar" th:if="${user.getPhoto() == null}"
+                                     th:src="@{/assets/users/defaultProfilePhoto.jpg}"/>
+
+                                <img alt="avatar" class="avatar" th:if="${user.getPhoto() != null}"
+                                     th:src="@{'data:image/png;base64,'+ ${user.getEncodedImage()}}"/>
+                                <span th:text="#{user.update.photo}">Change Image</span>
+                            </label>
+                        </div>
+
+                        <div th:insert="fragments/user-profile-menu.html" th:fragment="user-profile-menu"></div>
+
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="col-md-12 border-right">
+                        <div class="items-table">
+                            <br>
+                            <h1><strong>Edit your profile</strong></h1>
+                            <br><br>
+
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input class="form-control" id="username" type="text"
+                                       th:value="${user.username}"
+                                       readonly>
+                            </div>
+
+                            <form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${userDto}"
+                                  enctype="multipart/form-data"
+                                  method="post">
+                                <br>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input class="form-control" id="email" type="text" th:field="*{email}">
+                                    <label class="error error-fields" style="color: lightseagreen"
+                                           th:errors="*{email}"></label>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="firstName">First name</label>
+                                    <input class="form-control" id="firstName" type="text" th:field="*{firstName}">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="lastName">Last name</label>
+                                    <input class="form-control" id="lastName" type="text" th:field="*{lastName}">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone number</label>
+                                    <input class="form-control" id="phoneNumber" type="text" th:field="*{phoneNumber}">
+                                    <label class="error error-fields" style="color: lightseagreen"
+                                           th:errors="*{phoneNumber}"></label>
+                                </div>
+                                <div style="background: transparent; border: none;">
+                                    <input class="input-transparent text_field"
+                                           type="file" id="file" accept="image/*" name="univ"
+                                           th:field="*{file}"/>
+                                </div>
+                                <br>
+<!--                                <input type="submit" name="Upload"-->
+<!--                                       style="background-color: #d32f2f;color: white"-->
+<!--                                       class="btn-send" value="Upload"/>-->
+                                <td><input type="submit" class="btn btn-success btn-block btn-lg gradient-custom-2 text-body"
+                                           role=button value="Submit"/>
+                                </td>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

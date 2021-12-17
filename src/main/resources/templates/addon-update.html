@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update addon</title>
+    <style>
+        #description {
+            height: 200px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="container">
+    <div class="content-page" style="margin: auto">
+
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                <div class="card border-0 shadow">
+
+                    <div class="profile-image-edit">
+                        <label class="-label" for="file">
+                            <img alt="avatar" class="avatar" th:if="${addon.getImage() == null}"
+                                 th:src="@{/assets/addons/photos/defaultAddonPhoto.jpg}"/>
+
+                            <img alt="avatar" class="avatar" th:if="${addon.getImage() != null}"
+                                 th:src="*{'data:image/png;base64,'+ addon.getBase6EncodedImage()}"/>
+                            <span th:text="#{addon.update.photo}">Change Image</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="col-md-12 border-right">
+                    <div class="items-table">
+                        <br>
+                        <h1><strong>Update addon</strong></h1>
+                        <br><br>
+
+                        <form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${addonDto}"
+                              enctype="multipart/form-data"
+                              method="post">
+
+                            <div class="form-group" style="display: none">
+                                <label for="name">userid</label>
+                                <input class="form-control" id="userId" type="text" th:field="*{userId}"
+                                       th:value="${addon.getUser().getId()}" readonly>
+                            </div>
+
+                            <div class="form-group" style="display: none">
+                                <label for="name">Date</label>
+                                <input class="form-control" id="uploadDate" type="text" th:field="*{uploadDate}"
+                                       th:value="${addon.getDate()}" readonly>
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="name">Date</label>
+                                <input class="form-control" id="status" type="text" th:field="*{status}"
+                                       th:value="${addon.getStatus()}" readonly>
+                            </div>
+
+
+                            <div th:if="${addon.getStatus().toString().equals('Draft')}" class="form-group">
+                                <label for="name">Name</label>
+                                <input class="form-control" id="name" type="text" th:field="*{name}"
+                                       th:value="${addon.getName()}">
+                            </div>
+                            <div th:unless="${addon.getStatus().toString().equals('Draft')}" class="form-group">
+                                <label for="name2">Name</label>
+                                <input class="form-control" id="name2" type="text" th:field="*{name}"
+                                       th:value="${addon.getName()}" readonly>
+                            </div>
+
+                            <br>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" th:field="*{description}"
+                                          th:text="*{description}">description</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="link">Github repository link</label>
+                                <input class="form-control" id="link" type="text" th:field="*{link}"
+                                       th:value="${addonDto.getLink()}">
+                            </div>
+                            <br>
+                            <div class="form-group" th:if="${isAdmin}">
+
+                                <label>Tags</label>
+                                <input type="checkbox" class="form-control input-sm" th:text="${tag.getName()}"
+                                       th:each="tag : ${tags}" th:value="${tag.getId()}"
+                                       th:checked="${addonTags.contains(tag.getId())}" th:name="tags">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label class="control-label">Ide:</label>
+                                <select class="form-control input-sm" th:field="*{ideId}">
+                                    <option th:each="ide : ${ides}" th:value="${ide.value}"
+                                            th:text="${ide.key}"></option>
+                                </select>
+                                <!-- <label class="error error-fields" style="color: lightseagreen"
+                                           th:errors="*{ide}"></label>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="binary_content">Upload binary content</label>
+                                <input type="file" class="form-control" id="binary_content" th:field="*{binaryContent}">
+                            </div>
+                            <div style="background: transparent; border: none;">
+                                <input class="input-transparent text_field"
+                                       type="file" id="file" accept="image/*" name="univ"
+                                       th:field="*{file}"/>
+                            </div>
+                            <br>
+                            <!--                                <input type="submit" name="Upload"-->
+                            <!--                                       style="background-color: #d32f2f;color: white"-->
+                            <!--                                       class="btn-send" value="Upload"/>-->
+
+
+                            <div th:if="${exceptionMessage} != null">
+                                <a style="color: lightseagreen" th:text="${exceptionMessage}"></a>
+                            </div>
+                            <br>
+
+
+                            <div>
+                                <button th:unless="${addon.getStatus().toString().equals('Draft')}"
+                                        class="btn btn-success" type="submit">Update<i
+                                        aria-hidden="true"></i></button>
+
+                                <button th:if="${addon.getStatus().toString().equals('Draft')}"
+                                        class="btn btn-success" type="submit">Create<i
+                                        aria-hidden="true"></i></button>
+                                <button th:if="${addon.getStatus().toString().equals('Draft')}"
+                                        type="submit"
+                                        class="btn btn-success btn-block btn-lg gradient-custom-2 text-body"
+                                        role=button
+                                        name="draft" value="draft">Save as draft
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

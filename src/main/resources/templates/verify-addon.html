@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Verify addon</title>
+    <link th:href="@{/custom.css}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="header"></div>
+<div class="container">
+    <div class="content-page" style="margin: auto; margin-bottom: 100px">
+        <div class="row justify-content-center">
+            <form class="addon" th:object="${addonCodeDto}" th:action="@{__${#httpServletRequest.requestURI}__}"
+                  method="post">
+                <h1><strong>Verify your add-on</strong></h1>
+                <br>
+                <div class="form-group">
+                    <label for="myInput">
+                        Enter the code you received in your email:
+                    </label>
+                    <br><br>
+                    <input id="myInput" style="display: inline; width: 80%; margin-right: 20px;" type="text"
+                           class="form-control" aria-describedby="emailHelp"
+                           placeholder="Enter code" th:field="*{code}">
+
+                    <br>
+                    <br>
+
+                    <input id="myButton" class="btn btn-success btn-block btn-lg gradient-custom-2 text-body"
+                           style="display: inline; width: 80%;"
+                           value="Verify"
+                           role=button type="submit"/>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer.html" th:fragment="footer"></div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+<script src="assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
+<script src="assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script>
+<!-- slider for products -->
+
+<script src="assets/corporate/scripts/layout.js" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+
+
+    let $input = document.getElementById('myButton')
+    $input.addEventListener('click', function () {
+        if (document.getElementById('myInput').value.indexOf("@") !== -1) {
+            this.value = 'Add-on is verified!';
+        }
+    })
+
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

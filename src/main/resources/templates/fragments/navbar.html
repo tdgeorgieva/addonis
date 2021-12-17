@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]>&lt;!&ndash;>
+<html lang="en">
+<![endif]-->
+
+<!-- Head BEGIN -->
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Addonis</title>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta content="Metronic Shop UI description" name="description">
+    <meta content="Metronic Shop UI keywords" name="keywords">
+    <meta content="keenthemes" name="author">
+
+    <meta property="og:site_name" content="-CUSTOMER VALUE-">
+    <meta property="og:title" content="-CUSTOMER VALUE-">
+    <meta property="og:description" content="-CUSTOMER VALUE-">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="-CUSTOMER VALUE-"><!-- link to image for socio -->
+    <meta property="og:url" content="-CUSTOMER VALUE-">
+
+    <link rel="icon" th:href="@{../../static/assets/favicon.ico}">
+
+    <!-- Fonts START -->
+    <link th:href="@{http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all}"
+          rel="stylesheet" type="text/css">
+    <link th:href="@{http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all}"
+          type="text/css"><!--- fonts for slider on the index page -->
+    <!-- Fonts END -->
+
+    <!-- Global styles START -->
+    <link th:href="@{/assets/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Global styles END -->
+
+    <!-- Page level plugin styles START -->
+    <link th:href="@{/assets/pages/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/assets/plugins/fancybox/source/jquery.fancybox.css}" rel="stylesheet">
+    <link th:href="@{/assets/plugins/owl.carousel/assets/owl.carousel.css}" rel="stylesheet">
+    <!-- Page level plugin styles END -->
+
+    <!-- Theme styles START -->
+    <link th:href="@{/assets/pages/css/components.css}" rel="stylesheet">
+    <link th:href="@{/assets/pages/css/slider.css}" rel="stylesheet">
+    <link th:href="@{/assets/pages/css/style-shop.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/assets/corporate/css/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/corporate/css/style-responsive.css}" rel="stylesheet">
+    <link th:href="@{/assets/corporate/css/themes/turquoise.css}" rel="stylesheet" id="style-color">
+    <link th:href="@{/assets/corporate/css/custom.css}" rel="stylesheet">
+
+    <!-- font awesome 4 icons-->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css}">
+
+    <!--    our css -->
+    <link th:href="@{/assets/custom.css}" rel="stylesheet">
+    <!-- Theme styles END -->
+
+</head>
+<!-- Head END -->
+
+<!-- Body BEGIN -->
+<body class="ecommerce">
+
+<!-- BEGIN TOP BAR -->
+<div class="pre-header">
+    <div class="container">
+        <div class="row">
+            <!-- BEGIN TOP BAR LEFT PART -->
+            <div class="col-md-6 col-sm-6 additional-shop-info">
+                <ul class="list-unstyled list-inline">
+                    <li><i class="fa fa-phone"></i><span>+1 456 6717</span></li>
+                    <!-- BEGIN LANGS -->
+                    <li class="langs-block">
+                        <a href="javascript:void(0);" class="current">English </a>
+                    </li>
+                    <!-- END LANGS -->
+                </ul>
+            </div>
+            <!-- END TOP BAR LEFT PART -->
+
+            <!-- BEGIN TOP BAR MENU -->
+            <div class="col-md-6 col-sm-6 additional-nav">
+                <ul class="list-unstyled list-inline pull-right">
+                    <li><a th:if="${isAuthenticated}" th:href="@{/account}">My Account</a></li>
+                    <li th:unless="${isAuthenticated}"><a th:href="@{/auth/login}">Sign In</a></li>
+                    <li th:unless="${isAuthenticated}"><a th:href="@{/auth/register}">Register</a></li>
+                    <li th:if="${isAuthenticated}"><a th:href="@{/auth/logout}">Sign Out</a></li>
+                </ul>
+            </div>
+            <!-- END TOP BAR MENU -->
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN HEADER -->
+<div class="header">
+    <div class="container">
+        <a class="site-logo" href="#" th:href="@{/}" th:text="#{home}"></a>
+
+        <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
+
+        <!-- BEGIN NAVIGATION -->
+        <div class="header-navigation">
+            <ul>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Addons
+                    </a>
+
+                    <!-- BEGIN DROPDOWN MENU -->
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/addons}">All</a></li>
+                        <li><a th:href="@{/addons?pageSize=10&ideId=-1&sortBy=date_desc&addonName=}">New</a></li>
+                        <li><a th:href="@{/addons/filtered/featured}">Featured</a></li>
+                        <li><a th:href="@{/addons?pageSize=10&ideId=-1&sortBy=downloadsCount_desc&addonName=}">Popular</a></li>
+                        <li th:if="${isAuthenticated and isVerified}">
+                            <a th:href="@{/addons/new}">Create new addon</a></li>
+                    </ul>
+                    <!-- END DROPDOWN MENU -->
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Pages
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li th:if="${isAuthenticated}"><a th:href="@{/account}">My account</a></li>
+                        <li th:if="${isAuthenticated}"><a
+                                th:href="@{/users/{username}(username=${session.currentUserUsername})}">My Add-ons</a>
+                        </li>
+                        <li th:if="${isAdmin}"><a th:href="@{/users}">Users</a></li>
+                        <li><a th:href="@{/privacy-policy}">Privacy Policy</a></li>
+                        <li><a th:href="@{/terms-conditions}">Terms &amp; Conditions</a></li>
+                    </ul>
+                </li>
+                <li th:if="${isAdmin}" style="cursor: pointer">
+                    <a th:href="@{/addons/pending}">Pending addons</a>
+                </li>
+                <li th:if="${isAdmin}" style="cursor: pointer">
+                    <a th:href="@{/identityVerification}">Id verification requests</a>
+                </li>
+                <!-- BEGIN TOP SEARCH -->
+                <li class="menu-search">
+                    <span class="sep"></span>
+                    <i class="fa fa-search search-btn"></i>
+                    <div class="search-box">
+
+                        <form th:if="${#httpServletRequest.requestURI == '/'}" action="#" th:action="@{/}"
+                              th:method="post"
+                              th:object="${searchAllDto}">
+                            <div class="input-group rounded">
+                                <input type="text" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                       aria-describedby="search-addon" th:field="*{searchAll}"/>
+                                <span class="input-group-btn">
+                      <button class="btn btn-primary" type="submit">Search</button>
+                    </span>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+                <!-- END TOP SEARCH -->
+            </ul>
+        </div>
+        <!-- END NAVIGATION -->
+    </div>
+</div>
+<!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
+<!--[if lt IE 9]>
+<script th:src="@{/assets/plugins/respond.min.js}"></script>
+<![endif]-->
+<script th:src="@{/assets/plugins/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/assets/plugins/jquery-migrate.min.js}" type="text/javascript"></script>
+<script th:src="@{/assets/plugins/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/assets/corporate/scripts/back-to-top.js}" type="text/javascript"></script>
+<script th:src="@{/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js}" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+</body>
+</html>
+<!-- Header END -->

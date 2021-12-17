@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <title th:text="${user.getUsername()}"My account></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+          integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ti-icons@0.1.2/css/themify-icons.css">
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+        <div class="row justify-content-center">
+
+            <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                <div class="card border-0 shadow">
+
+                    <div th:insert="fragments/user-profile-image.html" th:fragment="image"></div>
+
+                    <div th:insert="fragments/user-profile-menu.html" th:fragment="user-profile-menu"></div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="col-md-12 border-right">
+                    <div class="items-table">
+                        <br>
+                        <h1><strong>profile information</strong></h1>
+                        <br>
+
+                        <div th:insert="fragments/user-follow.html" th:fragment="user-follow"></div>
+
+                        <br>
+                        <table class="table table-hover">
+                            <tr>
+                                <th scope="col" th:text="#{user.label.username}">Username</th>
+                                <th th:text="${user.getUsername()}">Username</th>
+                            </tr>
+                            <tr>
+                                <th scope="col" th:text="#{user.label.email}">Email</th>
+                                <th th:text="${user.getEmail()}">Email</th>
+                            </tr>
+                            <tr>
+                                <th scope="col" th:text="#{user.label.first-name}">First name</th>
+                                <th th:if="${user.getFirstName() != null}" th:text="${user.getFirstName()}"> firstname
+                                </th>
+                                <th th:if="${user.getFirstName() == null}" th:text="#{user.label.no.first-name}">
+                                    firstname
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" th:text="#{user.label.last-name}">Last name</th>
+                                <th th:if="${user.getLastName() != null}" th:text="${user.getLastName()}">lastname</th>
+                                <th th:if="${user.getLastName() == null}" th:text="#{user.label.no.last-name}">
+                                    lastname
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" th:text="#{user.label.phone-number}">Phone number</th>
+                                <th th:if="${user.getPhoneNumber() != null}" th:text="${user.getPhoneNumber()}"> phone
+                                    number
+                                </th>
+                                <th th:if="${user.getPhoneNumber() == null}" th:text="#{user.label.no.phone-number}">
+                                    phone number
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" th:text="#{user.label.status}">Status</th>
+                                <th th:text="${user.getStatus()}">Status</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

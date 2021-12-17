@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>New addon</title>
+    <link th:href="@{/custom.css}" rel="stylesheet">
+    <style>
+        .form-create {
+            margin: 0px 150px;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="container">
+    <div class="content-page" style="margin: auto">
+
+        <div class="row justify-content-center">
+            <div class="col-md-12 border-right">
+                <div class="form-create items-table">
+                    <br>
+
+                    <form th:object="${addonDto}"
+                          th:action="@{__${#httpServletRequest.requestURI}__}"
+                          method="post" enctype="multipart/form-data">
+                        <h3>New Addon</h3><br>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control" id="name" th:field="*{name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input class="form-control" id="description" th:field="*{description}">
+                        </div>
+                        <div class="form-group">
+                            <label for="binary_content">Upload binary content</label>
+                            <input type="file" class="form-control" id="binary_content"
+                                   th:field="*{binaryContent}">
+                        </div>
+                        <div class="form-group">
+                            <label for="ide">IDE</label>
+                            <select class="form-control" id="ide" th:field="*{ideId}">
+                                <option th:each="ide : ${ides}" th:value="${ide.value}"
+                                        th:text="${ide.key}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="link">Link</label>
+                            <input class="form-control" id="link" th:field="*{link}">
+                        </div>
+                        <div th:if="${exceptionMessage} != null">
+                            <a style="color: lightseagreen" th:text="${exceptionMessage}"></a>
+
+                        </div>
+                        <div class="profile-image-edit">
+                            <label class="-label" for="file">
+                                <img alt="avatar" class="avatar"
+                                     th:src="@{/assets/addons/photos/defaultAddonPhoto.jpg}"/>
+
+                                <span th:text="#{addon.update.photo}">Change Image</span>
+                            </label>
+                        </div>
+                        <div style="background: transparent; border: none;">
+                            <input class="input-transparent text_field"
+                                   type="file" id="file" accept="image/*" name="univ"
+                                   th:field="*{file}"/>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary" name="post" value="post">Create
+                        </button>
+                        <button type="submit" class="btn btn-primary" name="draft" value="draft">Save
+                            draft
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div th:insert="fragments/footer.html" th:fragment="footer"></div>
+</body>
+</html>

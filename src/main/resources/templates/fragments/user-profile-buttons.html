@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="card-body" style="padding: 15px;">
+    <div class="d-flex justify-content-center">
+        <a href="#" th:unless="${user.followersContains(currentUser)}"
+           class="btn btn-success btn-block btn-lg gradient-custom-2 text-body"
+           role=button
+           th:href="@{/users/{username}/follow(username=${user.getUsername()})}">follow</a>
+
+        <a href="#" th:if="${user.followersContains(currentUser)}"
+           class="btn btn-success btn-block btn-lg gradient-custom-2 text-body"
+           role=button
+           th:href="@{/users/{username}/unfollow(username=${user.getUsername()})}">unfollow</a>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="#" class="btn btn-success btn-block btn-lg gradient-custom-2 text-body" role=button
+           th:if="${currentUser.isAdmin() && !user.isBlocked()}"
+           th:text="#{user.block}"
+           th:href="@{/users/{username}/block(username=${user.getUsername()})}">block</a>
+
+        <a href="#" class="btn btn-success btn-block btn-lg gradient-custom-2 text-body" role=button
+           th:if="${currentUser.isAdmin() && user.isBlocked()}"
+           th:text="#{user.unblock}"
+           th:href="@{/users/{username}/unblock(username=${user.getUsername()})}">unblock</a>
+    </div>
+    <br>
+</div>
+</body>
+</html>

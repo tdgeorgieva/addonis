@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getUsername()}">Title</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+            <div class="row justify-content-center">
+
+                <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                    <div class="card border-0 shadow">
+                        <div th:insert="fragments/user-profile-image.html" th:fragment="image"></div>
+
+                        <div th:insert="fragments/user-profile-buttons.html" th:fragment="buttons"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="col-md-12 border-right">
+                        <div class="items-table">
+                            <br>
+                            <h1><strong th:text="${user.getUsername()} + '\'s request'"></strong></h1>
+                            <br>
+
+                            <div class="product-page-content">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" th:text="#{user.request.id-card}">#</th>
+                                        <th scope="col" th:text="#{user.request.selfie}">email</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><img class="request-image"
+                                                 th:src="@{'data:image/png;base64,'+ '' + ${idCardImage}}"/>
+                                        </td>
+                                        <td><img class="request-image"
+                                                 th:src="@{'data:image/png;base64,'+ '' + ${selfie}}"/>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <form th:action="@{__${#httpServletRequest.requestURI}__}" method="post">
+                                    <button type="submit" class="btn btn-primary" name="verify" value="verify">Verify user</button>
+                                    <button style="background-color: red"
+                                            type="submit" class="btn btn-primary" value="decline">Decline request
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+<script src="assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
+<script src="assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script>
+<!-- slider for products -->
+
+<script src="assets/corporate/scripts/layout.js" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

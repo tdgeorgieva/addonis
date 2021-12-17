@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update addon</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="container">
+    <div class="content-page" style="margin: auto">
+
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                <div class="card border-0 shadow">
+
+                    <div class="profile-image-edit">
+                        <label class="-label">
+                            <img alt="avatar" class="avatar" th:if="${addon.getImage() == null}"
+                                 th:src="@{/assets/addons/photos/defaultAddonPhoto.jpg}"/>
+
+                            <img alt="avatar" class="avatar" th:if="${addon.getImage() != null}"
+                                 th:src="*{'data:image/png;base64,'+ addon.getBase6EncodedImage()}"/>
+                            <span th:text="#{addon.update.photo}">Change Image</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="col-md-12 border-right">
+                    <div class="items-table">
+                        <br>
+                        <h1><strong>Approve addon</strong></h1>
+                        <br><br>
+
+                        <form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${tagsDto}"
+                              enctype="multipart/form-data"
+                              method="post">
+                            <div class="form-group">
+
+                                <label>Tags</label>
+                                <input type="checkbox" class="form-control input-sm" th:text="${tag.getName()}"
+                                       th:each="tag : ${tags}" th:value="${tag.getId()}"
+                                       th:checked="${addonTags.contains(tag.getId())}" th:name="tags">
+                            </div>
+                            <br>
+                            <a>
+                                <button class="btn btn-success" type="submit">Approve<i
+                                        aria-hidden="true"></i></button>
+                            </a>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

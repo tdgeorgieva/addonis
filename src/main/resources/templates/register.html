@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Registration</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <div class="container">
+        <div class="content-page" style="width: 600px; align-items: center; margin: auto">
+
+            <div class="mask d-flex align-items-center h-100">
+                <div class="mask d-flex align-items-center h-100">
+                    <div class="card-body p-5">
+                        <h1 class="text-uppercase text-center mb-10">Create an account</h1>
+
+                        <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="username">Username
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="text" id="username" class="form-control form-control-lg"
+                                       th:field="*{username}"/>
+                                <label class="error error-fields" style="color: lightseagreen" th:errors="*{username}"></label>
+                            </div>
+                            <br>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="email">Email
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="text" id="email" class="form-control form-control-lg" th:field="*{email}"/>
+                                <label class="error error-fields" style="color: lightseagreen" th:errors="*{email}"></label>
+                            </div>
+                            <br>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="password">Password
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="password" id="password" class="form-control form-control-lg"
+                                       th:field="*{password}"/>
+                                <label class="error error-fields" style="color: lightseagreen" th:errors="*{password}"></label>
+                            </div>
+                            <br>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="matchingPassword">Confirm password
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="password" id="matchingPassword" class="form-control form-control-lg"
+                                       th:field="*{matchingPassword}"/>
+                                <label class="error error-fields" style="color: lightseagreen" th:errors="*{matchingPassword}"></label>
+                            </div>
+                            <br>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="phoneNumber">Phone number
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="text" id="phoneNumber" class="form-control form-control-lg"
+                                       th:field="*{phoneNumber}"/>
+                                <label class="error error-fields" style="color: lightseagreen" th:errors="*{phoneNumber}"></label>
+                            </div>
+                            <br>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="firstName">First name
+                                </label>
+                                <input type="text" id="firstName" class="form-control form-control-lg"
+                                       th:field="*{firstName}"/>
+                                <label class="error error-fields" th:errors="*{firstName}"></label>
+                            </div>
+                            <br>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="lastName">Last name
+                                </label>
+                                <input type="text" id="lastName" class="form-control form-control-lg"
+                                       th:field="*{lastName}"/>
+                                <br>
+                                <label class="error error-fields" style="color: lightseagreen"  th:errors="*{lastName}"></label>
+                            </div>
+<!--                            <br>-->
+
+                            <div class="form-check d-flex justify-content-center mb-5">
+                                <input
+                                        class="form-check-input me-2"
+                                        type="checkbox"
+                                        value=""
+                                        id="form2Example3cg"
+                                />
+                                <label class="form-check-label" for="form2Example3cg">
+                                    I agree to the <a th:href="@{/terms-conditions}" class="text-body"><u>Terms of service</u></a>
+                                </label>
+                            </div>
+                            <br>
+
+                            <div class="d-flex justify-content-center">
+                                <input class="btn btn-success btn-block btn-lg gradient-custom-2 text-body" role=button type="submit" value="Register"/>
+                            </div>
+                            <br>
+                            <p class="text-center text-muted mt-5 mb-0">Already have an account?
+                                <a class="fw-bold text-body" th:href="@{/auth/login}"><u>Login
+                                here</u></a></p>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

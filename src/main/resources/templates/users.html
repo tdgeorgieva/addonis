@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+
+            <form class="margin-top col-12 " action="#" th:action="@{/users}" th:object="${filterUserDto}"
+                  th:method="get">
+
+                <h2 th:text="#{users.title}">All users</h2>
+                <div class="pull-right">
+                    <label class="control-label">Show:</label>
+                    <select class="form-control input-sm" name="pageSize">
+                        <option value="2" th:selected="${page != null && page.getPageSize() == 2}">2</option>
+                        <option value="5" th:selected="${page != null && page.getPageSize() == 5}">5</option>
+                        <option value="10" th:selected="${page != null && page.getPageSize() == 10}">10</option>
+                        <option value="30" th:selected="${page != null && page.getPageSize() == 30}">30</option>
+                    </select>
+                </div>
+                <div class="search-form" style="margin: 20px;">
+                    <input name="name" th:value="${filterUserDto.getName()}" type="search" class="form-control rounded"
+                           placeholder="Search" aria-label="Search"
+                           aria-describedby="search-addon" style="float: left; width: 85%; margin-right: 30px;"/>
+                    <button type="submit" class="btn btn-outline-primary btn-success">search</button>
+                </div>
+            </form>
+
+            <div class="items-table">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" th:text="#{user.label.username}">#</th>
+                        <th scope="col" th:text="#{user.label.email}">email</th>
+                        <th scope="col" th:text="#{user.label.phone-number}">phn</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:each="user : ${users}">
+                    <tr>
+                        <td><img class="custom-thumbnail"
+                                 th:src="@{'data:image/png;base64,'+ '' + ${user.getEncodedImage()}}"/>
+                        </td>
+                        <td><a th:href="@{/users/{username}(username=${user.getUsername()})}" th:text="${user.getUsername()}"></a></td>
+                        <td th:text="${user.getEmail()}">email</td>
+                        <td th:text="${user.getPhoneNumber()}">phn</td>
+                        <td><a href="#" class="btn btn-success" role=button style="background-color: red"
+                               th:text="#{user.block}"
+                               th:unless="${user.isBlocked()}"
+                               th:href="@{/users/{username}/block(username=${user.getUsername()})}">block</a>
+
+                            <a href="#" class="btn btn-success" role=button
+                               th:text="#{user.unblock}"
+                               th:if="${user.isBlocked()}"
+                               th:href="@{/users/{username}/unblock(username=${user.getUsername()})}">unblock</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <br>
+
+            </div>
+            <!-- BEGIN PAGINATOR -->
+            <div class="row">
+                <div class="col-md-8 col-sm-8">
+                    <ul class="pagination pull-right" >
+                        <li th:each="i: ${#numbers.sequence(1, totalPages)}"><a th:href="@{'/users?pageNumber=' + ${i-1} + '&' + ${queryPath}} " th:text="${i}"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END PAGINATOR -->
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

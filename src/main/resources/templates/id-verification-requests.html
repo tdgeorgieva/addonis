@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Identity verification</title>
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+
+            <h2>All requests</h2>
+
+            <div class="items-table">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" th:text="#{user.label.username}">#</th>
+                        <th scope="col" th:text="#{user.label.email}">email</th>
+                        <th scope="col" th:text="#{user.label.phone-number}">phn</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:each="user : ${usersForVerification}">
+                    <tr>
+                        <td><img class="custom-thumbnail"
+                                 th:src="@{'data:image/png;base64,'+ '' + ${user.getEncodedImage()}}"/>
+                        </td>
+                        <td><a th:href="@{/users/{username}(username=${user.getUsername()})}" th:text="${user.getUsername()}"></a></td>
+                        <td th:text="${user.getEmail()}">email</td>
+                        <td th:text="${user.getPhoneNumber()}">phn</td>
+                        <td><a href="#" class="btn btn-success" role=button
+                               th:text="#{user.view-request}"
+                               th:href="@{/identityVerification/{username}(username=${user.getUsername()})}">request</a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <br>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

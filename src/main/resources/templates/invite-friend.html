@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Invite a friend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+          integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ti-icons@0.1.2/css/themify-icons.css">
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <div class="container">
+
+
+        <div class="content-page" style="margin: auto">
+
+
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                    <div class="card border-0 shadow">
+
+                        <div th:insert="fragments/user-profile-image.html" th:fragment="image"></div>
+
+                        <div th:insert="fragments/user-profile-menu.html" th:fragment="user-profile-menu"></div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="col-md-12 border-right">
+                        <div class="items-table">
+                            <br>
+                            <h1><strong>Invite a friend</strong></h1>
+                            <br>
+
+<!--                            <div th:insert="fragments/user-follow.html" th:fragment="user-follow"></div>-->
+                            <br>
+
+
+                            <form th:action="@{__${#httpServletRequest.requestURI}__}"
+                                  th:object="${emailDto}" method="post">
+                                <div class="form-group">
+                                    <label for="myInput">
+                                        Enter your friend's email address to send them an invitation link to register at
+                                        Addonis!
+                                    </label>
+                                    <br><br>
+                                    <input id="myInput" style="display: inline; width: 80%; margin-right: 20px;" type="email"
+                                           class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Enter email" th:field="*{email}">
+
+                                    <br>
+                                    <br>
+
+                                    <input id="myButton" class="btn btn-success btn-block btn-lg gradient-custom-2 text-body" style="display: inline; width: 80%;"
+                                           value="Send link"
+                                           role=button type="submit"/>
+                                    <br><br>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+
+    let $input = document.getElementById('myButton')
+    $input.addEventListener('click', function (){
+        if (document.getElementById('myInput').value.indexOf("@") !== -1) {
+            this.value = 'Sent!';
+        }
+    })
+
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

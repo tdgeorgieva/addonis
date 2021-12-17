@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Featured Addons</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="header"></div>
+<div class="main">
+    <div class="container">
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+            <!-- BEGIN CONTENT -->
+            <div class="col-md-12 col-sm-12">
+                <div class="goods-page">
+                    <div class="goods-data clearfix">
+                        <div class="table-wrapper-responsive">
+                            <div th:if="${addons.isEmpty()}">
+                                <h2 th:text="#{addons.title.empty}">No addons</h2>
+                            </div>
+                            <h2 th:unless="${addons.isEmpty()}" th:text="${heading}">addons</h2>
+                            <table caption="addons table" th:unless="${addons.isEmpty()}">
+                                <thead>
+                                <tr>
+                                    <th scope="col" th:text="#{addon.label.image}">image</th>
+                                    <th scope="col" th:text="#{addon.label.name}">name</th>
+                                    <th scope="col" th:text="#{addon.label.info}">info</th>
+                                    <th scope="col" th:text="#{addon.label.ide}">ide</th>
+                                    <th scope="col" th:text="#{addon.label.downloads}">downloads</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody th:each="addon : ${addons}">
+                                    <tr>
+                                        <td class="goods-page-image"><a href="javascript:;">
+                                            <label class="-label">
+                                                <img alt="avatar" class="avatar" th:if="${addon.getImage() == null}"
+                                                     th:src="@{/assets/addons/photos/defaultAddonPhoto.jpg}"/>
+
+                                                <img alt="avatar" class="avatar" th:if="${addon.getImage() != null}"
+                                                     th:src="|data:image/png;base64,${addon.getBase6EncodedImage()}|"/>
+                                            </label>
+                                        </a>
+                                        </td>
+
+                                        <td class="goods-page-price">
+                                            <a th:href="@{/addons/{id}(id=${addon.getId()})}">
+                                                <strong th:text="${addon.getName()}"></strong></a></td>
+
+                                        <td class="goods-page-description">
+                                            <p th:if="${addon.getUser.getLastName() == null}">
+                                                <strong>Addon Creator:</strong><em><a
+                                                    th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"
+                                                    th:text="${addon.getUser().getUsername()}"></a></em></p>
+
+                                            <p th:if="${addon.getUser.getLastName() != null}">
+                                                <strong>Addon Creator:</strong><em><a
+                                                    th:href="@{/users/{username}(username=${addon.getUser.getUsername()})}"
+                                                    th:text="${addon.getUser().getUserFullName()}"></a></em></p>
+
+                                            <p><strong>Upload date:</strong><em th:text="${addon.getDate()}">upload
+                                                date</em></p>
+                                        </td>
+
+                                        <td class="goods-page-price"><strong
+                                                th:text="${addon.getIde().getName()}"></strong>
+                                        </td>
+                                        <td class="goods-page-total"><strong
+                                                th:text="${addon.getDownloadsCount()}"></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer.html" th:fragment="footer"></div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="display: flex; align-items: center;">
+    <div class="col border-right text-center" style="padding-right: 50px;">
+        <a th:href="@{/users/{username}/following(username=${user.getUsername()})}">
+            <h2 class="font-light" th:text="${user.getNumberOfFollowing()}"></h2>
+            <h4 class="text-uppercase">Following</h4>
+        </a>
+    </div>
+    <div class="col border-right text-center">
+        <a th:href="@{/users/{username}/followers(username=${user.getUsername()})}">
+            <h2 class="font-light" th:text="${user.getNumberOfFollowers()}"></h2>
+            <h4 class="text-uppercase">Followers</h4>
+        </a>
+    </div>
+</div>
+</body>
+</html>

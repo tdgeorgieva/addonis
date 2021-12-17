@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Account Verified</title>
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+
+<div class="main">
+    <div class="container">
+        <div class="content-page" style="width: 600px; align-items: center; margin: auto">
+
+            <div class="mask d-flex align-items-center h-100">
+                <div class="mask d-flex align-items-center h-100">
+                    <div class="card-body p-5">
+                        <div class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
+                            <br>
+                            <h1><i class="fa fa-check-circle"></i>
+                                <strong class="mx-2">Registration completed successfully!</strong></h1>
+                            <hr>
+                            <p class="mb-0">Your account has been successfully verified!<br>
+                            In order to be able to create new add-ons, please go to your profile settings and verify your identity!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

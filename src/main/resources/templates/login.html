@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Sign in</title>
+    <link th:href="@{/project-css/login.css}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+    <div class="main">
+        <div class="container">
+            <div class="content-page" style="width: 600px; align-items: center; margin: auto">
+
+                <div class="mask d-flex align-items-center h-100">
+                    <div class="mask d-flex align-items-center h-100">
+                        <div class="card-body p-5">
+                            <h1 class="text-uppercase text-center mb-10">Sign in</h1>
+
+                            <form action="#" th:action="@{/auth/login}" th:object="${loginDto}" method="post">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="username">Username
+                                        <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="username" class="form-control form-control-lg"
+                                           th:field="*{username}"/>
+                                    <label class="error error-fields" style="color: lightseagreen" th:errors="*{username}"></label>
+                                </div>
+                                <br>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="password">Password
+                                        <span class="required">*</span>
+                                    </label>
+                                    <input type="password" id="password" class="form-control form-control-lg"
+                                           th:field="*{password}"/>
+                                    <label class="error error-fields" style="color: lightseagreen" th:errors="*{password}"></label>
+                                </div>
+                                <br>
+
+
+                                <div class="d-flex justify-content-center">
+                                    <input class="btn btn-success btn-block btn-lg gradient-custom-2 text-body" role=button type="submit" value="Sign in"/>
+                                </div>
+                                <br>
+                                <p class="text-center text-muted mt-5 mb-0">No account?
+                                    <a class="fw-bold text-body" th:href="@{/auth/register}"><u>Create one!</u></a></p>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

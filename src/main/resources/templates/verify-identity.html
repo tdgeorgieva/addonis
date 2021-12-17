@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <title th:text="${user.getUsername()}"My account></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+          integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ti-icons@0.1.2/css/themify-icons.css">
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+            <div class="row justify-content-center">
+
+                <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                    <div class="card border-0 shadow">
+
+                        <div th:insert="fragments/user-profile-image.html" th:fragment="image"></div>
+
+                        <div th:insert="fragments/user-profile-menu.html" th:fragment="user-profile-menu"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="col-md-12 border-right">
+                        <div class="items-table">
+                            <br>
+                            <h1><strong>Request identity verification</strong></h1>
+                            <br><br>
+
+                            <form th:unless="${hasRequestedVerification}" th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${verificationDto}"
+                                  enctype="multipart/form-data"
+                                  method="post">
+                                <br>
+                                <div>
+                                    <label class="form-label" for="idCardPhoto">Upload a photo of your id card
+                                        <span class="required">*</span>
+                                    </label>
+                                    <input class="text_field"
+                                           type="file" id="idCardPhoto" accept="image/*" name="univ"
+                                           th:field="*{idCardPhoto}"/>
+                                    <label class="error error-fields" style="color: lightseagreen" th:errors="*{idCardPhoto}"></label>
+                                </div>
+                                <br>
+                                <div>
+                                    <label class="form-label" for="selfiePhoto">Upload a selfie
+                                        <span class="required">*</span>
+                                    </label>
+                                    <input class="text_field"
+                                           type="file" id="selfiePhoto" accept="image/*" name="univ"
+                                           th:field="*{selfiePhoto}"/>
+                                    <label class="error error-fields" style="color: lightseagreen" th:errors="*{selfiePhoto}"></label>
+                                </div>
+                                <br>
+                                <!--                                <input type="submit" name="Upload"-->
+                                <!--                                       style="background-color: #d32f2f;color: white"-->
+                                <!--                                       class="btn-send" value="Upload"/>-->
+                                <td><input type="submit" class="btn btn-success btn-block btn-lg gradient-custom-2 text-body"
+                                           role=button value="Submit"/>
+                                </td>
+                            </form>
+
+                            <div th:if="${hasRequestedVerification}">
+                                <h3>You have requested identity verification. </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE)-->
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

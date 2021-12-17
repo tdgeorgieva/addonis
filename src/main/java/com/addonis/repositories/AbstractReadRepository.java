@@ -50,7 +50,7 @@ public abstract class AbstractReadRepository<T> implements BaseReadRepository<T>
     @Override
     public List<T> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(format("from %s ", clazz.getName()), clazz).list();
+            return session.createQuery(format("from %s order by id", clazz.getName()), clazz).list();
         }
     }
 }

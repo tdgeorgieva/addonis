@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Following</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+          integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ti-icons@0.1.2/css/themify-icons.css">
+</head>
+<body class="ecommerce">
+<div th:insert="fragments/navbar.html" th:fragment="navbar"></div>
+
+<div class="main">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="content-page" style="margin: auto">
+
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-3 mb-5 mb-lg-0 wow fadeIn">
+                    <div class="card border-0 shadow">
+
+                        <div th:insert="fragments/user-profile-image.html" th:fragment="image"></div>
+
+                        <div th:if="${currentUser.getUsername().equals(user.getUsername())}"
+                             th:insert="fragments/user-profile-menu.html" th:fragment="user-profile-menu"></div>
+                        <div th:unless="${currentUser.getUsername().equals(user.getUsername())}"
+                             th:insert="fragments/user-profile-buttons.html" th:fragment="buttons"></div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="col-md-12 border-right">
+                        <div class="items-table">
+                            <br>
+                            <h1><strong th:text="${user.getUsername()}"></strong>
+                                <svg th:if="${user.isVerified()}" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
+                                    <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+                                </svg>
+                            </h1>
+                            <br>
+                            <div th:insert="fragments/user-follow.html" th:fragment="user-follow"></div>
+                            <br><br>
+
+                            <div class="items-table">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <h2>Following</h2>
+                                    </thead>
+
+                                    <tbody th:each="followed : ${following}">
+                                    <tr>
+                                        <td><img alt="thumbnail" class="custom-thumbnail"
+                                                 th:src="@{'data:image/png;base64,'+ '' + ${followed.getEncodedImage()}}"/>
+                                        </td>
+                                        <td><a th:href="@{/users/{username}(username=${followed.getUsername()})}">
+                                            <strong th:text="${followed.getUsername()}"></strong></a></td>
+                                        <td th:if="${followed.followersContains(currentUser)}"><a href="#"
+                                                                                           class="btn btn-success"
+                                                                                           role=button
+                                                                                           th:href="@{/users/{username}/unfollow(username=${followed.getUsername()})}">unfollow</a>
+                                        </td>
+                                        <td th:unless="${followed.followersContains(currentUser)}"><a href="#"
+                                                                                               class="btn btn-success"
+                                                                                               role=button
+                                                                                               th:href="@{/users/{username}/follow(username=${followed.getUsername()})}">follow</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+
+<script src="assets/corporate/scripts/layout.js" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Layout.init();
+        Layout.initOWL();
+        Layout.initTwitter();
+    });
+</script>
+<!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+</html>

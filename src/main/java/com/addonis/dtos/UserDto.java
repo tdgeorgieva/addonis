@@ -1,60 +1,30 @@
 package com.addonis.dtos;
 
-import com.addonis.models.UserStatus;
 import com.addonis.models.registration.ValidEmail;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.sql.CallableStatement;
 
 public class UserDto {
-    @NotNull
-    @NotEmpty
-    private String username;
-
-    @NotNull
-    @NotEmpty
-    private String password;
 
     @ValidEmail
-    @NotNull
-    @NotEmpty
     private String email;
 
+    @Valid
+    @Size(min = 10, max = 10, message = "Phone number is not valid! Size should be 10 characters!")
     private String phoneNumber;
 
-    @NotNull
-    @NotEmpty
     private String firstName;
 
-    @NotNull
-    @NotEmpty
     private String lastName;
 
-    @Lob
-    private String photo;
-
-    private int roleId;
-
-    private UserStatus status;
+//    @NotNull(message = "The photo file must be provided")
+    MultipartFile file;
 
     public UserDto() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -89,27 +59,12 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public String getPhoto() {
-        return photo;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(UserStatus status) {
-        this.status = status;
-    }
 }

@@ -2,11 +2,12 @@ package com.addonis.controllers;
 
 import com.addonis.exceptions.AuthenticationFailureException;
 import com.addonis.exceptions.EntityNotFoundException;
-import com.addonis.models.User;
+import com.addonis.models.user.User;
 import com.addonis.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,17 +38,19 @@ public class AuthenticationHelper {
     }
 
     public User tryGetUser(HttpSession session) {
-        String currentUser = (String) session.getAttribute("currentUser");
-        if (currentUser == null) {
+        String currentUserUsername = (String) session.getAttribute("currentUserUsername");
+        if (currentUserUsername == null) {
             throw new AuthenticationFailureException("No user logged in.");
         }
-        return userService.getByUsername(currentUser);
+        return userService.getByUsername(currentUserUsername);
     }
 
     public User verifyAuthentication(String username, String password) {
         try {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             User user = userService.getByUsername(username);
-            if (!user.getPassword().equals(password)) {
+
+            if (!encoder.matches(password, user.getPassword())) {
                 throw new AuthenticationFailureException(AUTHENTICATION_FAILURE_MESSAGE);
             }
             return user;
@@ -55,5 +58,4 @@ public class AuthenticationHelper {
             throw new AuthenticationFailureException(AUTHENTICATION_FAILURE_MESSAGE);
         }
     }
-
 }
