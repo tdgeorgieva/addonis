@@ -1,5 +1,4 @@
 # Addonis - The better add-ons registry.
-Telerik academy graduate project of **Gabriela Stoyanova** and **Teodora Georgieva**
 
 ## Description
 
